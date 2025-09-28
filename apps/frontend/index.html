@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-commerce Store</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>🛍️ E-commerce Store</h1>
+            <div class="cart-icon" onclick="toggleCart()">
+                🛒 Cart (<span id="cart-count">0</span>)
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="app-status">
+            <div id="api-status" class="status-indicator">
+                <span class="status-dot"></span>
+                <span>Connecting to API...</span>
+            </div>
+        </div>
+
+        <section class="products">
+            <h2>Products</h2>
+            <div id="loading" class="loading">Loading products...</div>
+            <div id="products-grid" class="products-grid"></div>
+        </section>
+
+        <div id="cart-sidebar" class="cart-sidebar">
+            <div class="cart-header">
+                <h3>Shopping Cart</h3>
+                <button onclick="toggleCart()" class="close-cart">✕</button>
+            </div>
+            <div id="cart-items" class="cart-items"></div>
+            <div class="cart-footer">
+                <div class="cart-total">
+                    Total: $<span id="cart-total">0.00</span>
+                </div>
+                <button id="checkout-btn" onclick="checkout()" class="checkout-btn">
+                    Checkout
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <div id="overlay" class="overlay" onclick="toggleCart()"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>

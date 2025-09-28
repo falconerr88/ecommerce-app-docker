@@ -1,0 +1,81 @@
+# ======================
+# Node.js / JavaScript
+# ======================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+package-lock.json
+yarn.lock
+.pnpm-debug.log
+
+# Build
+dist/
+build/
+.next/
+out/
+
+# ======================
+# Python
+# ======================
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pdb
+*.egg
+*.egg-info/
+.eggs/
+.Python
+env/
+venv/
+ENV/
+.venv/
+pip-log.txt
+pip-delete-this-directory.txt
+.mypy_cache/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# ======================
+# Docker
+# ======================
+*.pid
+*.log
+*.tmp
+*.swp
+*.swo
+.docker/
+docker-compose.override.yml
+
+# ======================
+# Kubernetes
+# ======================
+.kube/
+*.yaml.backup
+*.yml.backup
+
+# ======================
+# Editor / IDE
+# ======================
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+# ======================
+# OS files
+# ======================
+.DS_Store
+Thumbs.db
+
+# ======================
+# Secrets / Keys
+# ======================
+*.env
+*.secret
+*.key
+*.crt
+*.pem
