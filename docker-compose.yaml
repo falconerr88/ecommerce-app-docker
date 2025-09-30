@@ -1,0 +1,70 @@
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: ecommerce-postgres
+    environment:
+      POSTGRES_USER: ecommerce_user
+      POSTGRES_PASSWORD: secure_password_123
+      POSTGRES_DB: ecommerce_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ecommerce_user -d ecommerce_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: ecommerce-redis
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: ./apps/backend
+      dockerfile: Dockerfile
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    container_name: ecommerce-backend
+    environment:
+      DATABASE_URL: postgresql://ecommerce_user:secure_password_123@postgres:5432/ecommerce_db
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      SECRET_KEY: super-secret-key-for-development
+      DEBUG: "true"
+      LOG_LEVEL: debug
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - ./apps/backend:/app
+    command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+
+  frontend:
+    build:
+      context: ./apps/frontend
+      dockerfile: Dockerfile
+    container_name: ecommerce-frontend
+    ports:
+      - "8080:80"
+    depends_on:
+      - backend
+    volumes:
+      - ./apps/frontend:/usr/share/nginx/html:ro
+
+volumes:
+  postgres_data:

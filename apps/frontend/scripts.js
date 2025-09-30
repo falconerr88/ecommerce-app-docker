@@ -1,7 +1,6 @@
 // App configuration
-const API_BASE_URL = window.location.hostname === 'localhost' 
-    ? 'http://localhost:8000' 
-    : 'http://backend-service:8000';
+const API_BASE_URL = '/api'; // Works in Docker/Kubernetes setup
+    
 
 // Global state
 let products = [];
