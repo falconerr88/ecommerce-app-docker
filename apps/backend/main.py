@@ -6,6 +6,8 @@ from typing import List
 import json
 import logging
 from datetime import datetime
+from fastapi.staticfiles import StaticFiles
+import os
 
 from database import get_db, Product, CartItem, Order, redis_client
 from models import (
@@ -38,8 +40,11 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+# Static files (e.g., product images)
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+app.mount("/static", StaticFiles(directory=os.path.join(BASE_DIR, "static")), name="static")
 
- # /health -> solo dice que la app está viva
+# /health -> solo dice que la app está viva
 @app.get("/health", response_model=HealthCheck)
 async def health_check():
     return HealthCheck(
@@ -227,11 +232,11 @@ async def startup_event():
     existing_products = db.query(Product).count()
     if existing_products == 0:
         sample_products = [
-            Product(name="Laptop Gaming", description="High-performance gaming laptop", price=1299.99, stock=10, image_url="https://via.placeholder.com/300x200?text=Laptop"),
-            Product(name="Smartphone", description="Latest model smartphone", price=799.99, stock=25, image_url="https://via.placeholder.com/300x200?text=Phone"),
-            Product(name="Headphones", description="Noise-cancelling wireless headphones", price=299.99, stock=50, image_url="https://via.placeholder.com/300x200?text=Headphones"),
-            Product(name="Smart Watch", description="Fitness tracking smart watch", price=399.99, stock=30, image_url="https://via.placeholder.com/300x200?text=Watch"),
-            Product(name="Tablet", description="10-inch tablet for productivity", price=549.99, stock=20, image_url="https://via.placeholder.com/300x200?text=Tablet"),
+            Product(name="Laptop Gaming", description="High-performance gaming laptop", price=1299.99, stock=10, image_url="/static/images/laptop-gaming.jpg"),
+            Product(name="Smartphone", description="Latest model smartphone", price=799.99, stock=25, image_url="/static/images/smartphone.jpg"),
+            Product(name="Headphones", description="Noise-cancelling wireless headphones", price=299.99, stock=50, image_url="/static/images/headphones.jpg"),
+            Product(name="Smart Watch", description="Fitness tracking smart watch", price=399.99, stock=30, image_url="/static/images/smartwatch.jpg"),
+            Product(name="Tablet", description="10-inch tablet for productivity", price=549.99, stock=20, image_url="/static/images/tablet.jpg"),
         ]
         
         for product in sample_products:
