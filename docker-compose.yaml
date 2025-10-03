@@ -4,11 +4,11 @@ services:
     image: postgres:16-alpine
     container_name: ecommerce-postgres
     environment:
-      POSTGRES_USER: ecommerce_user
-      POSTGRES_PASSWORD: secure_password_123
-      POSTGRES_DB: ecommerce_db
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
     ports:
-      - "5432:5432"
+      - "$(POSTGRES_PORT):5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
@@ -21,7 +21,7 @@ services:
     image: redis:7-alpine
     container_name: ecommerce-redis
     ports:
-      - "6379:6379"
+      - "$(REDIS_PORT):6379"
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
       interval: 10s
@@ -37,14 +37,16 @@ services:
       - 1.1.1.1
     container_name: ecommerce-backend
     environment:
-      DATABASE_URL: postgresql://ecommerce_user:secure_password_123@postgres:5432/ecommerce_db
-      REDIS_HOST: redis
-      REDIS_PORT: 6379
-      SECRET_KEY: super-secret-key-for-development
-      DEBUG: "true"
-      LOG_LEVEL: debug
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_PORT=${POSTGRES_PORT}
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PORT=${REDIS_PORT}
+      - DEBUG=true
+      - LOG_LEVEL=debug
     ports:
-      - "8000:8000"
+      - "$(BACKEND_PORT):8000" 
     depends_on:
       postgres:
         condition: service_healthy
@@ -60,7 +62,7 @@ services:
       dockerfile: Dockerfile
     container_name: ecommerce-frontend
     ports:
-      - "8080:80"
+      - "$(FRONTEND_PORT):80"
     depends_on:
       - backend
     volumes:
