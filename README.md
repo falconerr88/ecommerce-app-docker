@@ -69,5 +69,5 @@ docker-compose down -v
 
 📜 Licencia
 
-MIT License
+GPL 3.0
 © 2025 Thiago
