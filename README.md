@@ -17,17 +17,6 @@ Incluye backend, frontend, base de datos, cache y servidor web.
 
 ---
 
-## 📁 Estructura del proyecto
-
-ecommerce-app/
-│
-├── backend/ # Código del backend (FastAPI)
-├── frontend/ # Archivos estáticos del frontend
-├── docker-compose.yml # Orquestación de contenedores
-├── .env # Variables de entorno sensibles (NO subir a GitHub)
-├── .env.example # Ejemplo de variables de entorno
-└── README.md
-
 
 
 🚀 Cómo ejecutar la aplicación
