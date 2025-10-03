@@ -31,6 +31,7 @@ Pasos
 Clonar el repositorio:
 
 git clone git@github.com:falconerr88/ecommerce-app-docker.git
+
 cd ecommerce-app-docker
 
 
