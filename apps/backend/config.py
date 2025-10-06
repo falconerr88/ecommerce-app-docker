@@ -2,22 +2,31 @@ import os
 from pydantic_settings import BaseSettings
 
 class Settings(BaseSettings):
-    # Database
-    database_url: str = os.getenv("DATABASE_URL", "postgresql://user:password@localhost:5432/ecommerce")
-    
-    # Redis
-    redis_host: str = os.getenv("REDIS_HOST", "localhost")
-    redis_port: int = int(os.getenv("REDIS_PORT", "6379"))
-    
-    # App settings
     app_name: str = "E-commerce API"
     app_version: str = "1.0.0"
-    debug: bool = os.getenv("DEBUG", "false").lower() == "true"
-    
-    # Security
-    secret_key: str = os.getenv("SECRET_KEY", "your-secret-key-change-in-production")
-    
+
+    # PostgreSQL
+    postgres_host: str
+    postgres_port: int
+    postgres_user: str
+    postgres_password: str
+    postgres_db: str
+
+    # Redis
+    redis_host: str
+    redis_port: int
+
+    # App
+    secret_key: str
+    debug: bool = False
+
+    @property
+    def database_url(self) -> str:
+        return f"postgresql://{self.postgres_user}:{self.postgres_password}@{self.postgres_host}:{self.postgres_port}/{self.postgres_db}"
+
     class Config:
         env_file = ".env"
+        case_sensitive = False
+
 
 settings = Settings()
